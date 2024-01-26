@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Scuffed Map</string>
+    <string name="title_activity_bnav">BNav</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_bottom_nav">BottomNav</string>
+    <string name="title_activity_map_image">MapImage</string>
+    <string name="title_activity_main2">MainActivity2</string>
+</resources>
