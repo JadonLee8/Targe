@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,13 +32,13 @@ import kotlin.math.sin
 @Composable
 fun MapImage() {
     var scale by remember {
-        mutableStateOf(1f)
+        mutableFloatStateOf(1f)
     }
     var offset by remember {
         mutableStateOf(Offset.Zero)
     }
     var rotation by remember {
-        mutableStateOf(0f)
+        mutableFloatStateOf(0f)
     }
 
     BoxWithConstraints(
