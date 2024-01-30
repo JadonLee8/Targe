@@ -1,5 +1,6 @@
 package com.example.scuffedmap
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.scuffedmap.ui.theme.ScuffedMapTheme
@@ -44,21 +46,26 @@ import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
 
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
+            val navController = rememberNavController()
+            Scaffold (
+                bottomBar = { bottomNav(navController) }
+            ) {
+                MyApp(navController)
+            }
         }
     }
 }
 
 @Composable
-fun MyApp(){
-    val navController = rememberNavController()
+fun MyApp(navController : NavHostController){
     NavHost(navController, startDestination = "map") {
-        composable("map") { MapImage(onNavigateToFriendsList = { navController.navigate("friendslist") }) }
-        composable("search") { Search(onNavigateToProfile = { navController.navigate("profile") }) }
+        composable("map") { MapImage() }
+        composable("search") { Search() }
     }
 }
 
