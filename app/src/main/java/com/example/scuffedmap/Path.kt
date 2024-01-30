@@ -1,4 +1,4 @@
 package com.example.scuffedmap
 
-class Path {
+class Path (var nodes: List<Node>){
 }
