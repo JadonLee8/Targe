@@ -1,6 +1,6 @@
 package com.example.scuffedmap
 
-open class Node (var mCoordinates: Vector, var floor: Byte, var availableDestinations: Array<Node>)  {
+open class Node (open var mCoordinates: Vector, open var floor: Byte, open var availableDestinations: Array<Node>)  {
     fun getDistBetween(other: Node): Double {
         return mCoordinates.getDistanceBetween(other.mCoordinates)
     }

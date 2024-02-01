@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,10 +22,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.zIndex
 import com.example.scuffedmap.ui.theme.ScuffedMapTheme
 import kotlin.math.cos
 import kotlin.math.sin
@@ -40,6 +45,37 @@ fun MapImage() {
     var rotation by remember {
         mutableFloatStateOf(0f)
     }
+
+
+    val layerToggleColors = SwitchDefaults.colors(
+        checkedThumbColor = MaterialTheme.colorScheme.primary,
+        uncheckedThumbColor = MaterialTheme.colorScheme.primary,
+        checkedTrackColor = MaterialTheme.colorScheme.primary,
+        uncheckedTrackColor = MaterialTheme.colorScheme.primary,
+        checkedBorderColor = MaterialTheme.colorScheme.primary,
+        uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+        checkedIconColor = MaterialTheme.colorScheme.onPrimary,
+        uncheckedIconColor = MaterialTheme.colorScheme.onPrimary,
+        disabledCheckedBorderColor = MaterialTheme.colorScheme.primary,
+        disabledCheckedIconColor = MaterialTheme.colorScheme.onPrimary,
+        disabledCheckedTrackColor = MaterialTheme.colorScheme.primary,
+        disabledUncheckedBorderColor = MaterialTheme.colorScheme.primary,
+        disabledUncheckedIconColor = MaterialTheme.colorScheme.onPrimary,
+        disabledUncheckedTrackColor = MaterialTheme.colorScheme.primary,
+        disabledCheckedThumbColor = MaterialTheme.colorScheme.primary,
+        disabledUncheckedThumbColor = MaterialTheme.colorScheme.primary
+    )
+
+
+    Switch(
+        checked = false,
+        onCheckedChange = { /*TODO*/ },
+        enabled = true,
+//        colors = layerToggleColors,
+        modifier = Modifier
+            .rotate(-90f)
+            .zIndex(5f)
+    )
 
     BoxWithConstraints(
         modifier = Modifier

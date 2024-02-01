@@ -18,6 +18,7 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
 import androidx.navigation.compose.rememberNavController
 import com.example.scuffedmap.ui.theme.UTOrange
@@ -41,7 +42,10 @@ fun bottomNav(navController: NavController){
                     selected = false,
                     onClick = { navController.navigate("search") }
                 )
-                // Add more items as needed
+                BottomNavigationItem(
+                    selected = false,
+                    onClick = { navController.navigate("about") },
+                    icon = { Icon(Icons.Filled.Info, contentDescription = null) })
             }
         }
     }

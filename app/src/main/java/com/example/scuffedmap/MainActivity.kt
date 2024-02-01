@@ -45,7 +45,6 @@ import androidx.navigation.compose.rememberNavController
 
 
 class MainActivity : ComponentActivity() {
-
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,44 +65,6 @@ fun MyApp(navController : NavHostController){
     NavHost(navController, startDestination = "map") {
         composable("map") { MapImage() }
         composable("search") { Search() }
+        composable("about") { About() }
     }
 }
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Preview (showBackground = true)
-//@Composable
-//public fun appPreview() {
-//    ScuffedMapTheme {
-//        Scaffold(
-//            bottomBar = {
-//                bottomNav()
-//            }
-//        ) { innerPadding ->
-//            Column(
-//                modifier = Modifier
-//                    .padding(innerPadding),
-//                verticalArrangement = Arrangement.spacedBy(16.dp),
-//            ) {
-//                map()
-//            }
-//        }
-//    }
-//}
-
-/* saving
-            ScuffedMapTheme {
-                Scaffold (
-                    bottomBar = {
-                        bottomNav()
-                    }
-                ) { innerPadding ->
-                    Column(
-                        modifier = Modifier
-                            .padding(innerPadding),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        map()
-                    }
-                }
-            }
- */
