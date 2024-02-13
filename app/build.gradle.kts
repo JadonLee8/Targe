@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.test:core-ktx:1.5.0")
     val nav_version = "2.7.6"
     val room_version = "2.6.1"
 
@@ -86,4 +87,6 @@ dependencies {
     implementation("androidx.compose.material:material:1.1.0")
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation("ovh.plrapps:mapcompose:2.11.1")
+
 }
