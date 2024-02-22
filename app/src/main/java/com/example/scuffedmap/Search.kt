@@ -9,6 +9,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,25 +18,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.scuffedmap.ui.theme.ScuffedMapTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Search(){
     val context = LocalContext.current
+    var searchText by remember { mutableStateOf("") }
+    var searchResults by remember { mutableStateOf(mutableStateOf(mutableListOf<RoomEntity>())) }
+    var searchTrigger by remember { mutableStateOf(0.toLong())}
+    var searched by remember { mutableStateOf(true) }
+
+    LaunchedEffect(searchTrigger) {
+        performSearch(context, searchText, searchResults) { if (!searched){
+                searched = true
+                searchTrigger++
+            }
+        }
+    }
+
     ScuffedMapTheme {
         Surface(
             color = MaterialTheme.colorScheme.background,
             modifier = Modifier.padding(16.dp)
         ) {
             Column {
-                var searchText by remember { mutableStateOf("") }
-
                 OutlinedTextField(
                     value = searchText,
                     onValueChange = { searchText = it },
@@ -43,24 +57,38 @@ fun Search(){
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                Button(onClick = { performSearch(context, searchText) }) {
+                Button(onClick = { searched = false; searchTrigger++}) {
                     Text("Search")
+                }
+
+                Column {
+                    searchResults.value.forEach { room ->
+                        Text("Room Number: ${room.roomNum}, Description: ${room.description}, Has Windows: ${room.hasWindows}")
+                    }
                 }
             }
         }
     }
 }
 
-fun performSearch(context: Context, searchText: String) {
+fun performSearch(context: Context, searchText: String, searchResults: MutableState<MutableList<RoomEntity>>, searchTrigger: ()->Unit) {
     CoroutineScope(Dispatchers.IO).launch {
-        val rooms = loadRoomsFromCsv(context).filter { room ->
-            room.roomNum.contains(searchText, ignoreCase = true) ||
-                    room.description.contains(searchText, ignoreCase = true)
+        val rooms = loadRoomsFromCsv(context)
+        val filteredRooms = if (searchText.isNotEmpty()) {
+            rooms.filter { room ->
+                room.roomNum.contains(searchText, ignoreCase = true) ||
+                        room.description.contains(searchText, ignoreCase = true)
+            }
+        } else {
+            mutableListOf()
         }
 
-        rooms.forEach { room ->
-            println("Room Number: ${room.roomNum}, Description: ${room.description}, Has Windows: ${room.hasWindows}")
+        withContext(Dispatchers.Main) {
+            searchResults.value.clear()
+            searchResults.value.addAll(filteredRooms)
+            println("Search Results: ${searchResults.value}")
         }
+        searchTrigger()
     }
 }
 

@@ -45,6 +45,9 @@ fun MapImage() {
     var rotation by remember {
         mutableFloatStateOf(0f)
     }
+    var isSwitchChecked by remember { mutableStateOf(false) }
+    var currentPainter by remember { mutableStateOf(R.drawable.whsfloor1) }
+
 
 
     val layerToggleColors = SwitchDefaults.colors(
@@ -68,10 +71,18 @@ fun MapImage() {
 
 
     Switch(
-        checked = false,
-        onCheckedChange = { /*TODO*/ },
+        checked = isSwitchChecked,
+        onCheckedChange = { isChedked ->
+            isSwitchChecked = isChedked
+            if (isSwitchChecked) {
+                currentPainter = R.drawable.whsfloor2
+            } else {
+                currentPainter = R.drawable.whsfloor1
+            }
+        },
         enabled = true,
-//        colors = layerToggleColors,
+
+        colors = layerToggleColors,
         modifier = Modifier
             .rotate(-90f)
             .zIndex(5f)
@@ -108,7 +119,7 @@ fun MapImage() {
                 )
             }
         Image(
-            painter = painterResource(R.drawable.whsfloor1),
+            painter = painterResource(currentPainter),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxHeight()
