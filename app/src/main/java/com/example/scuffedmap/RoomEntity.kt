@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 data class RoomEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val roomNum: String,
-    val description: String,
-    val hasWindows: Boolean
+    val teachers: String,
+    val description: String
 )

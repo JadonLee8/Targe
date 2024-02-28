@@ -2,6 +2,10 @@ package com.example.scuffedmap
 
 import RoomEntity
 import android.content.Context
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.scuffedmap.ui.theme.ScuffedMapTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +45,9 @@ fun Search(){
     var searchResults by remember { mutableStateOf(mutableStateOf(mutableListOf<RoomEntity>())) }
     var searchTrigger by remember { mutableStateOf(0.toLong())}
     var searched by remember { mutableStateOf(true) }
+    val state = rememberScrollState()
+
+    LaunchedEffect(Unit) { state.animateScrollTo(0) }
 
     LaunchedEffect(searchTrigger) {
         performSearch(context, searchText, searchResults) { if (!searched){
@@ -61,9 +74,12 @@ fun Search(){
                     Text("Search")
                 }
 
-                Column {
+                Column (
+                    modifier = Modifier.verticalScroll(state)
+                ){
                     searchResults.value.forEach { room ->
-                        Text("Room Number: ${room.roomNum}, Description: ${room.description}, Has Windows: ${room.hasWindows}")
+                        Text("Room Number: ${room.roomNum}, Description: ${room.description}, Teachers: ${room.teachers}")
+                        Divider()
                     }
                 }
             }
@@ -77,7 +93,8 @@ fun performSearch(context: Context, searchText: String, searchResults: MutableSt
         val filteredRooms = if (searchText.isNotEmpty()) {
             rooms.filter { room ->
                 room.roomNum.contains(searchText, ignoreCase = true) ||
-                        room.description.contains(searchText, ignoreCase = true)
+                        room.description.contains(searchText, ignoreCase = true) ||
+                        room.teachers.contains(searchText, ignoreCase = true)
             }
         } else {
             mutableListOf()
@@ -100,9 +117,9 @@ fun loadRoomsFromCsv(context: Context): List<RoomEntity> {
         lines.forEach { line ->
             val parts = line.split(",")
             val roomNum = parts[0]
-            val description = parts[1]
-            val hasWindows = parts[2].toBoolean()
-            val room = RoomEntity(0, roomNum, description, hasWindows)
+            val teachers = parts[1]
+            val description = parts[2]
+            val room = RoomEntity(0, roomNum, teachers, description)
             rooms.add(room)
         }
     }
